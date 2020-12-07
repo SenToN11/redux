@@ -1,61 +1,40 @@
-import React from "react";
+import React from 'react';
 
-// import { addComment } from '../actions/index.js'
-
-class AddComment extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      date: new Date(),
-      text: '',
-      name: ''
-    };
-
+const Comments = ({
+  comments,
+  onRemove
+}) => {
+  const getDate = (value) => {
+	const date = new Date(Number(value));
+    const months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+		
+    return date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + ' ' + date.getHours() + ':' + (date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes()) ;
   }
-
-render() {
-  let comment = {
-    name: this.state.name,
-    text: this.state.text,
-    date: this.state.date
-  }
-
+ 
   return (
-    <form className={"form"}>
-    <input
-      type="text"
-      required
-      placeholder="Ваше имя "
-      value={this.state.name}
-      onChange={ev => {
-       this.setState({ name: ev.target.value })
-      }}
-    />
-    <textarea
-      type="text"
-      required
-      placeholder="Комментарий"
-      value={this.state.text}
-      onChange={ev => {
-        this.setState({ text: ev.target.value });
-      }}
-    ></textarea>
-    <button
-      onClick={(ev) => {
-        ev.preventDefault();
-        if (this.state.name === "" || this.state.text === "") {
-          alert("Заполнить поле");
-        } else {
-          this.props.addComment(comment);
-        }
-      }}
-    >
-      Отправить
-    </button>
-  </form>
-  )
-}
-}
+    <ul>
+     { comments.map((comment) => {
+        return (
+	      <li key={comment.id} className={"list"}>
+            <article className="comment">
+              <h2 className="name">{comment.autor}</h2>
+              <div className="text">{comment.text}</div>
+              <div className="desc">
+                
+                <time className="comment-time">{getDate(comment.datetime)}</time>
+                <div className={"button"}>
+                  <button 
+                    onClick={e => {onRemove(comment.id)}}>
+                    Удалить
+                  </button>
+                </div>
+              </div>	
+            </article>
+	      </li>
+        )
+      }) }
+    </ul>
+  );
+};
 
-export default AddComment;
-
+export default Comments;

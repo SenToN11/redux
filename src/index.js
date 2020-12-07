@@ -1,43 +1,27 @@
-import React from "react";
-// import  { render } from "react-dom";
-import ReactDOM from "react-dom";
-import {Provider} from "react-redux"
-import CommentApp from "./containers/app";
-import {createStore} from "redux";
-import allcomments from "./reducers/index";
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import App from './containers/app';
+import { createStore } from 'redux';
+import comments from './reducers';
+
 
 import "./index.css";
 
-export const initialState = {
-  allcomments: [
-  {
-    name: "Дмитрий",
-    text: "Мне нравится!",
-    date: "20:46 21.07.2020",
-    
-  },
-  {
-  
-    name: "Мария",
-    text: "Ободряю",
-    date: "21:26 21.07.2020",
-    
-  },
-  {
-  
-    name: "Роман",
-    text: "Нужно больше времени!",
-    date: "23:12 21.07.2020",
-    
-  },
-]
-};
+const initialState = [
+  { id: 1, autor: "Max", text: "Hello World", datetime: "1604639443288" },
+  { id: 2, autor: "Dmitry", text: "Пример комментария", datetime: "1604639443688" },
+  { id: 3, autor: "Roman", text: "Привет мир", datetime: "1604639448788" },
+  { id: 4, autor: "Maria", text: "Пример комментария2", datetime: "1604656854413" }
+];
 
-const store = createStore(allcomments, initialState);
+const store = createStore(comments,(localStorage['comments']) ? JSON.parse(localStorage['comments']) : initialState);
 
+store.subscribe(() => {
+  localStorage['comments'] = JSON.stringify(store.getState(initialState));
+})
+	
 ReactDOM.render(
-  <Provider store={store}>
-  <CommentApp />
-</Provider>,
-document.querySelector('#app')
-);
+	<App store={store} />,
+	document.querySelector("#app")
+)

@@ -1,39 +1,43 @@
-import React from "react";
-// import AddComment from './add-comment';
-// import { removeComment }  from "../actions/index";
+import React,  { useState } from 'react';
 
-const CommentList = ({allcomments, removeComment}) => {
+const Form = ({
+  onAdd
+}) => {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+	
   return (
-    <ul>
-    {allcomments.map((comment, index) => {
-      return (
-        <li key={index} className={"list"}>
-          <span className={"name"}>{comment.name}</span>
-          <div className={"desc"}>
-            <div className={"text"}>
-              {comment.date}
-            </div>
-            <div className={"button"}>
-              <button
-                onClick={(ev) => {
-                 if (allcomments.length === 0 ) {
-                   return allcomments
-                 } else {
-                   removeComment(index);
-                 }
-                }}
-              >
-                Удалить
-              </button>
-            </div>
-          </div>
-          {comment.text}
-        </li>
-      );
-    })}
-  </ul>
-  );
-}
+    <form className="form" onSubmit={ev => {ev.preventDefault();
+     
+      if (name === "" || message === "") {
+        alert("Заполнить поле");
+      } else {
+        onAdd(name, message)
+      };
+      ev.target.userInput.value = '';
+      ev.target.userText.value = '';
+     }}>
+      <input
+        className="form-input"
+        type="text"
+        placeholder="Имя"
+        name="userInput"
+      onChange={(ev) => setName(ev.target.value)}
+      />
 
-export default CommentList;
+      <textarea
+        placeholder="Сообщение"
+        name="userText"
+        onChange={(ev) => setMessage(ev.target.value)}
+      />
 
+      <input
+        className="form-button"
+        type="submit"
+        value="Добавить"
+      />
+    </form>
+  )
+};
+
+export default Form;

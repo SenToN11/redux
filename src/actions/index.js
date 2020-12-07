@@ -1,22 +1,14 @@
 let nextCommentId = 0;
 
-export const ADD_COMMENT = 'ADD_COMMENT';
-export const REMOVE_COMMENT = 'REMOVE_COMMENT';
+export const onAdd = (name, message) => ({
+	type: 'ADD_COMMENT',
+	id: ++nextCommentId,
+	name,
+	message,
+	datetime: Date.now().valueOf()
+});
 
-
-export const addComment = (comment) => {
-  return {
-    type: ADD_COMMENT,
-    id: nextCommentId++,
-    payload: comment
-    }
-  }
-
-
-export const removeComment = (id) => {
-  return {
-    type: REMOVE_COMMENT,
-    id
-  }
-}
-
+export const onRemove = id=> ({
+	type: 'REMOVE_COMMENT',
+	id
+});
